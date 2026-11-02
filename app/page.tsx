@@ -1,69 +1,126 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useChat } from '@ai-sdk/react';
+import { useState } from 'react';
+
+const MAX_INPUT_LENGTH = 2000;
+
+export default function Chat() {
+  const [input, setInput] = useState('');
+  const [apiError, setApiError] = useState(false);
+  const [inputError, setInputError] = useState(false);	
+  const { messages, sendMessage, status, stop, error } = useChat({
+    onError: () => {
+      setApiError(true);
+    },
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex min-h-dvh items-center justify-center px-4 py-6 sm:px-6">
+      <div className="flex h-[min(40rem,calc(100dvh-3rem))] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
+        <header className="border-b border-slate-100 px-5 py-4 sm:px-6">
+          <p className="text-xs font-medium tracking-wide text-teal-700">
+            AI-assistent
           </p>
+          <h1 className="text-lg font-semibold text-slate-900">Chat</h1>
+        </header>
+
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-5 sm:px-6">
+          {messages.length === 0 ? (
+            <p className="m-auto max-w-sm text-center text-sm leading-relaxed text-slate-400">
+              Stel een vraag om het gesprek te starten.
+            </p>
+          ) : null}
+          {messages.map(message => (
+            <div
+              key={message.id}
+              className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div
+                className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[75%] ${message.role === 'user'
+                  ? 'rounded-br-md bg-teal-700 text-white'
+                  : 'rounded-bl-md bg-slate-100 text-slate-800'
+                  }`}
+              >
+                <p
+                  className={`mb-1 text-xs font-medium ${message.role === 'user' ? 'text-teal-100' : 'text-teal-700'
+                    }`}
+                >
+                  {message.role === 'user' ? 'Jij' : 'AI'}
+                </p>
+                {message.parts.map((part, i) => {
+                  switch (part.type) {
+                    case 'text':
+                      return <div key={`${message.id}-${i}`}>{part.text}</div>;
+                  }
+                })}
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {inputError && (
+          <div role="alert" className="px-5 py-3 text-sm text-red-600">
+            Vul eerst een bericht in.
+          </div>
+        )}
+
+        {apiError ? (
+          <div role="alert" className="px-5 py-3 text-sm text-red-600">
+            Er kon geen verbinding worden gemaakt met OpenAI.
+          </div>
+        ) : error ? (
+          <div role="alert" className="px-5 py-3 text-sm text-red-600">
+            Er is iets fout gegaan. Probeer het later opnieuw.
+          </div>
+        ) : null}
+
+        {input.length >= MAX_INPUT_LENGTH && (
+          <div className="text-red-500">
+            Je hebt de maximale lengte bereikt.
+          </div>
+        )}
+
+        <form
+          className="flex items-center gap-2 border-t border-slate-100 bg-slate-50/80 p-3 sm:p-4"
+          onSubmit={e => {
+            e.preventDefault();
+
+            if (input.length === 0) {
+              setInputError(true);
+              return;
+            }
+
+            setInputError(false);
+            setApiError(false);
+            sendMessage({ text: input });
+            setInput('');
+          }}
+        >
+          <textarea
+            className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
+            value={input}
+            placeholder="Typ een bericht…"
+            maxLength={MAX_INPUT_LENGTH}
+            onChange={e => setInput(e.currentTarget.value)}
+          />
+          <button
+            type="submit"
+            className="shrink-0 rounded-xl bg-teal-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            Verstuur
+          </button>
+          {(status === 'submitted' || status === 'streaming') && (
+            <button
+              type="button"
+              className="shrink-0 rounded-xl bg-teal-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800"
+              onClick={stop}
+            >
+              Stop
+            </button>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

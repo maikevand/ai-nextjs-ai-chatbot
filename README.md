@@ -1,3 +1,23 @@
+## Antwoorden op de vragen
+### 1. Voorbereiding
+1. In Webstorm kun je de instellingen van het project selecteren, waarna Webstorm zelf de commando's uitvoert om het project op te zetten. Nu voer je de commando's zelf uit in de terminal.
+
+2. Nee, dit werkt niet op alle besturingssystemen, ik krijg een foutmelding bij commando `touch .env.local`. In Windows Powershell heb ik het commando `New-Item .env.local -ItemType File` gebruikt om een nieuw bestand aan te maken.
+
+### 2. Bouw de basisapplicatie
+1. Alleen page.tsx draait in de browser, te herkennen aan de `'use client'`. Voor de chatfunctie is immers interactie met de gebruiker nodig.
+2. De API-key moet geheim blijven, omdat anderen hier misbruik van zouden kunnen maken als deze breder bekend wordt. Als je de sleutel in code zou zetten die naar de browser wordt gestuurd, leidt dit juist tot blootstelling van de key. Iemand anders zou dan bv. op de kosten van deze API-key kunnen gaan werken zonder toestemming. 
+3. Bij een gewone response wordt het antwoord weergegeven als dit helemaal klaar is. Bij een gestreamde response zie je het begin van het antwoord al verschijnen, terwijl het model nog bezig is met afronding van het antwoord.
+4. Vercel AI SDK faciliteert de implementatie van OpenAI in de applicatie. Bv. de koppeling met OpenAI en de useChat().
+5. De eerdere berichten van hetzelfde gesprek blijven zichtbaar (eerdere/andere gesprekken worden niet meegenomen). Bij een conversatie kan rekening gehouden worden met eerder geboden informatie, waarop je dan verder kan itereren. Als je maar één losse prompt zou kunnen gebruiken, wordt het erg lastig om in deze prompt precies alle informatie mee te nemen die nodig is.
+
+### Ga bewust om met API-gebruik
+1. Het beperken van de berichtlengte en antwoordlengte, omdat ik vermoed dat dit een significante invloed op het tokengebruik zal hebben zonder dat dit te veel ten koste gaat van de kwaliteit van de antwoorden. Een alternatief zoals berichtgeschiedenis doet dit ook, maar zal denk ik eerder ten koste gaan van de kwaliteit van het antwoord door verlies van context.
+2. Ik denk dat op deze manier minder tokens worden gebruikt, al zal het token-gebruik van deze tool mogelijk sowieso al minder snel uit de hand lopen dan bij chatbots die bv. afbeeldingen of video's genereren.
+3. Ik denk dat het altijd goed is om zowel frontend als backend te beveiligen. Als backend-controle achterwege wordt gelaten, bestaat het risico dat iemand daar gebruik van maakt door de controles in de frontend te omzeilen.
+4. Onbeperkt gebruik limiteren is nu nog niet mogelijk. Dan zou het gebruik gekoppeld moeten worden aan inloggegevens waarin het gebruik per gebruiker bijgehouden en begrensd wordt. Alternatief zou zijn om de mogelijkheden binnen één conversatie te begrenzen, maar daar ondervang je nog steeds niet meer dat iemand steeds nieuwe gesprekken begint.
+5. Omdat bij een chatgesprek alle eerdere berichten meegenomen worden als context. Dit kan helpend zijn qua kwaliteit van de output, maar kost ook meer tokens. 
+
 ## Opdrachtbeschrijving
 
 In deze opdracht bouw je een eenvoudige AI-chatapplicatie met Next.js, React en de Vercel AI SDK. Je gebruikt hiervoor de officiële documentatie als uitgangspunt.
