@@ -4,7 +4,12 @@
 
 2. Nee, dit werkt niet op alle besturingssystemen, ik krijg een foutmelding bij commando `touch .env.local`. In Windows Powershell commando `New-Item .env.local -ItemType File` gebruikt om een nieuw bestand aan te maken.
 
-
+### 2. Bouw de basisapplicatie
+1. Alleen page.tsx draait in de browser, te herkennen aan de `'use client'`. Voor de chatfunctie is interactie met de gebruiker nodig.
+2. De API-key moet geheim blijven, omdat anderen hier misbruik van zouden kunnen maken als deze breder bekend wordt. Iemand anders zou dan bv. op de kosten van deze API-key kunnen gaan werken zonder toestemming. Als je de sleutel in code zou zetten die naar de browser wordt gestuurd, leidt dit juist tot blootstelling van de key. 
+3. Bij een gewone response wordt het antwoord weergegeven als dit helemaal klaar is. Bij een gestreamde response zie je het begin van het antwoord al verschijnen, terwijl het model nog bezig is met afronding van het antwoord.
+4. Vercel AI SDK faciliteert de implementatie van OpenAI in de applicatie. Bv. de koppeling met OpenAI en de useChat().
+5. De eerdere berichten van hetzelfde gesprek blijven zichtbaar (eerdere/andere gesprekken worden niet meegenomen). Bij een conversatie kan rekening gehouden worden met eerder geboden informatie, waarop je dan verder kan itereren. Als je maar één losse prompt zou kunnen gebruiken, wordt het erg lastig om in deze prompt precies alle informatie mee te nemen die nodig is.
  
 
 ## Opdrachtbeschrijving

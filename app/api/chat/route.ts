@@ -14,6 +14,7 @@ import {
     const result = streamText({
       model: openai('gpt-4o-mini'),
       messages: await convertToModelMessages(messages),
+      temperature: 0.7,
       maxOutputTokens: 500,
     });
   

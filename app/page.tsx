@@ -7,33 +7,73 @@ export default function Chat() {
   const [input, setInput] = useState('');
   const { messages, sendMessage } = useChat();
   return (
-    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-      {messages.map(message => (
-        <div key={message.id} className="whitespace-pre-wrap">
-          {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, i) => {
-            switch (part.type) {
-              case 'text':
-                return <div key={`${message.id}-${i}`}>{part.text}</div>;
-            }
-          })}
-        </div>
-      ))}
+    <div className="flex min-h-dvh items-center justify-center px-4 py-6 sm:px-6">
+      <div className="flex h-[min(40rem,calc(100dvh-3rem))] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
+        <header className="border-b border-slate-100 px-5 py-4 sm:px-6">
+          <p className="text-xs font-medium tracking-wide text-teal-700">
+            AI-assistent
+          </p>
+          <h1 className="text-lg font-semibold text-slate-900">Chat</h1>
+        </header>
 
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          sendMessage({ text: input });
-          setInput('');
-        }}
-      >
-        <input
-          className="fixed dark:bg-zinc-900 bottom-0 w-full max-w-md p-2 mb-8 border border-zinc-300 dark:border-zinc-800 rounded shadow-xl"
-          value={input}
-          placeholder="Say something..."
-          onChange={e => setInput(e.currentTarget.value)}
-        />
-      </form>
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-5 sm:px-6">
+          {messages.length === 0 ? (
+            <p className="m-auto max-w-sm text-center text-sm leading-relaxed text-slate-400">
+              Stel een vraag om het gesprek te starten.
+            </p>
+          ) : null}
+          {messages.map(message => (
+            <div
+              key={message.id}
+              className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div
+                className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[75%] ${
+                  message.role === 'user'
+                    ? 'rounded-br-md bg-teal-700 text-white'
+                    : 'rounded-bl-md bg-slate-100 text-slate-800'
+                }`}
+              >
+                <p
+                  className={`mb-1 text-xs font-medium ${
+                    message.role === 'user' ? 'text-teal-100' : 'text-teal-700'
+                  }`}
+                >
+                  {message.role === 'user' ? 'Jij' : 'AI'}
+                </p>
+                {message.parts.map((part, i) => {
+                  switch (part.type) {
+                    case 'text':
+                      return <div key={`${message.id}-${i}`}>{part.text}</div>;
+                  }
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <form
+          className="flex items-center gap-2 border-t border-slate-100 bg-slate-50/80 p-3 sm:p-4"
+          onSubmit={e => {
+            e.preventDefault();
+            sendMessage({ text: input });
+            setInput('');
+          }}
+        >
+          <input
+            className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
+            value={input}
+            placeholder="Typ een bericht…"
+            onChange={e => setInput(e.currentTarget.value)}
+          />
+          <button
+            type="submit"
+            className="shrink-0 rounded-xl bg-teal-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800"
+          >
+            Verstuur
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
