@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 export default function Chat() {
   const [input, setInput] = useState('');
-  const { messages, sendMessage } = useChat();
+  const { messages, sendMessage, status, stop, error } = useChat();
   return (
     <div className="flex min-h-dvh items-center justify-center px-4 py-6 sm:px-6">
       <div className="flex h-[min(40rem,calc(100dvh-3rem))] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
@@ -52,6 +52,8 @@ export default function Chat() {
           ))}
         </div>
 
+        {error && <div className="text-red-500">Er is iets fout gegaan. Probeer het later opnieuw.</div>}
+
         <form
           className="flex items-center gap-2 border-t border-slate-100 bg-slate-50/80 p-3 sm:p-4"
           onSubmit={e => {
@@ -72,6 +74,15 @@ export default function Chat() {
           >
             Verstuur
           </button>
+          {(status === 'submitted' || status === 'streaming') && (
+          <button
+            type="button"
+            className="shrink-0 rounded-xl bg-teal-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800"
+            onClick={stop}
+          >
+            Stop
+          </button>
+          )}
         </form>
       </div>
     </div>
