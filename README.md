@@ -1,3 +1,12 @@
+## Antwoorden op de vragen
+### 1. Voorbereiding
+1. In Webstorm kun je de instellingen van het project selecteren, waarna Webstorm zelf de commando's uitvoert om het project op te zetten. Nu voer je de commando's zelf uit in de terminal.
+
+2. Nee, dit werkt niet op alle besturingssystemen, ik krijg een foutmelding bij commando `touch .env.local`. In Windows Powershell commando `New-Item .env.local -ItemType File` gebruikt om een nieuw bestand aan te maken.
+
+
+ 
+
 ## Opdrachtbeschrijving
 
 In deze opdracht bouw je een eenvoudige AI-chatapplicatie met Next.js, React en de Vercel AI SDK. Je gebruikt hiervoor de officiële documentatie als uitgangspunt.
