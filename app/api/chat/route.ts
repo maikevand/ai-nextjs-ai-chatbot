@@ -1,3 +1,4 @@
+import { saveChat } from '@/lib/chat/mutations';
 import {
   streamText,
   UIMessage,
@@ -8,7 +9,7 @@ import {
 
 import { openai } from '@ai-sdk/openai';
 
-const MAX_INPUT_LENGTH = 2000;
+const MAX_INPUT_LENGTH = 150;
 
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
@@ -38,6 +39,12 @@ export async function POST(req: Request) {
   });
 
   return createUIMessageStreamResponse({
-    stream: toUIMessageStream({ stream: result.stream }),
+    stream: toUIMessageStream({ 
+      stream: result.stream, 
+      originalMessages: messages,
+      onEnd: async ({ messages }) => {
+        await saveChat(crypto.randomUUID(), messages);
+      },
+    }),
   });
 }

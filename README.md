@@ -6,6 +6,12 @@
 `Treed alleen op als quizmaster en geef geen andere tekst dan de vragen, antwoorden en uitleg.`,
 4. Bij zero-shot geef je geen voorbeelden mee, bij one-shot één voorbeeld en bij few-shot een aantal verschillende voorbeelden. Dit zou kunnen helpen om de vragen van de quizmaster uniformer te maken, of om te zorgen dat er ook vragen worden gesteld met uitgebreidere antwoorden i.p.v. antwoorden van een paar woorden.
 
+### 2. Bewaar gesprekken in Supabase
+1. Bij een gesprek dat opgeslagen is in de React-state verdwijnt de conversatie bij refreshen. Als het gesprek opgslagen is in de database, kan het laatste gesprek geladen worden om zo weer weer te geven.
+2. Nee, het model onthoudt geen eerdere gesprekken, de database houdt deze bij.
+3. RLS staat aan, zodat de tabel niet publiekelijk toegankelijk is. Als je de key met PUBLIC-prefix in .env.local zou zetten, zou de key publiek toegankelijk worden. 
+4. In één rij: voordeel is dat het aantal rijen beperkter blijft, maar bij elke wijziging wordt alles opnieuw opgeslagen. Aparte rij per bericht: je kunt één bericht apart ophalen, maar om het gesprek opnieuw weer te geven moeten wel meerdere rijden opgehaald worden. 
+
 ## Antwoorden op de vragen (week 9)
 ### 1. Voorbereiding
 1. In Webstorm kun je de instellingen van het project selecteren, waarna Webstorm zelf de commando's uitvoert om het project op te zetten. Nu voer je de commando's zelf uit in de terminal.
