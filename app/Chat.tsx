@@ -26,18 +26,23 @@ export default function Chat
   });
 
   return (
-    <div className="flex min-h-dvh items-center justify-center px-4 py-6 sm:px-6">
-      <div className="flex h-[min(40rem,calc(100dvh-3rem))] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
-        <header className="border-b border-slate-100 px-5 py-4 sm:px-6">
-          <p className="text-xs font-medium tracking-wide text-teal-700">
+    <div className="flex min-h-dvh items-center justify-center gap-6 px-4 py-6 sm:px-6 lg:gap-10">
+      <img
+        src="/quiz-master.png"
+        alt="Quiz Master"
+        className="hidden h-32 w-32 shrink-0 drop-shadow-xl md:block lg:h-40 lg:w-40 xl:h-44 xl:w-44"
+      />
+      <div className="flex h-[min(40rem,calc(100dvh-3rem))] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-[#e7dcc6] bg-[#f7f1e6] shadow-2xl">
+        <header className="border-b border-[#eadfce] px-5 py-4 sm:px-6">
+          <p className="text-xs font-medium tracking-wide text-[#b8860b]">
             AI-quizmaster
           </p>
-          <h1 className="text-lg font-semibold text-slate-900">Quiz</h1>
+          <h1 className="text-lg font-semibold text-[#0d081c]">Quiz</h1>
         </header>
 
         <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-5 sm:px-6">
           {messages.length === 0 ? (
-            <p className="m-auto max-w-sm text-center text-sm leading-relaxed text-slate-400">
+            <p className="m-auto max-w-sm text-center text-sm leading-relaxed text-[#8d8376]">
               Stel een vraag om het gesprek te starten.
             </p>
           ) : null}
@@ -48,12 +53,12 @@ export default function Chat
             >
               <div
                 className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[75%] ${message.role === 'user'
-                  ? 'rounded-br-md bg-teal-700 text-white'
-                  : 'rounded-bl-md bg-slate-100 text-slate-800'
+                  ? 'rounded-br-md bg-[#0d081c] text-[#f3ead8]'
+                  : 'rounded-bl-md bg-white text-[#1c1730]'
                   }`}
               >
                 <p
-                  className={`mb-1 text-xs font-medium ${message.role === 'user' ? 'text-teal-100' : 'text-teal-700'
+                  className={`mb-1 text-xs font-medium ${message.role === 'user' ? 'text-[#f9c609]' : 'text-[#b8860b]'
                     }`}
                 >
                   {message.role === 'user' ? 'Jij' : 'AI'}
@@ -92,7 +97,7 @@ export default function Chat
         )}
 
         <form
-          className="flex items-center gap-2 border-t border-slate-100 bg-slate-50/80 p-3 sm:p-4"
+          className="flex items-center gap-2 border-t border-[#eadfce] bg-[#f3ecdf] p-3 sm:p-4"
           onSubmit={e => {
             e.preventDefault();
 
@@ -108,7 +113,7 @@ export default function Chat
           }}
         >
           <textarea
-            className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
+            className="min-w-0 flex-1 rounded-xl border border-[#e4d7c2] bg-white px-4 py-3 text-sm text-[#0d081c] outline-none placeholder:text-[#a39888] focus:border-[#e2b323] focus:ring-2 focus:ring-[#e2b323]/30"
             value={input}
             placeholder="Typ een bericht…"
             maxLength={MAX_INPUT_LENGTH}
@@ -116,14 +121,14 @@ export default function Chat
           />
           <button
             type="submit"
-            className="shrink-0 rounded-xl bg-teal-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800"
+            className="shrink-0 rounded-xl bg-[#0d081c] px-4 py-3 text-sm font-medium text-[#f3ead8] transition-colors hover:bg-[#241b3d]"
           >
             Verstuur
           </button>
           {(status === 'submitted' || status === 'streaming') && (
             <button
               type="button"
-              className="shrink-0 rounded-xl bg-teal-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800"
+              className="shrink-0 rounded-xl bg-[#0d081c] px-4 py-3 text-sm font-medium text-[#f3ead8] transition-colors hover:bg-[#241b3d]"
               onClick={stop}
             >
               Stop
