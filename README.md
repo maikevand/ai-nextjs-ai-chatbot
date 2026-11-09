@@ -1,4 +1,12 @@
-## Antwoorden op de vragen
+##Antwoorden op de vragen (week 10)
+### 1. Geef je chatbot vaste instructies
+1. Een prompt is datgene wat de gebruiker invoert, bv. een vraag of een opdracht. Een instructie zijn het doel en de randvoorwaarden achter de schermen. Hiermee wordt de chatbot geinstrueerd hoe te reageren.
+2. Je geeft instructies niet mee via de browser, omdat je de instructies serverside wilt houden. Via de browser meegeven maakt het risico groot op manipulatie van de instructies.
+3. Mijn chatbot ging eerst mee buiten de afbakening en gaf ook antwoorden op totaal andere vragen van de gebruiker. De instructie die hierop het meeste effect had was:
+`Treed alleen op als quizmaster en geef geen andere tekst dan de vragen, antwoorden en uitleg.`,
+4. Bij zero-shot geef je geen voorbeelden mee, bij one-shot één voorbeeld en bij few-shot een aantal verschillende voorbeelden. Dit zou kunnen helpen om de vragen van de quizmaster uniformer te maken, of om te zorgen dat er ook vragen worden gesteld met uitgebreidere antwoorden i.p.v. antwoorden van een paar woorden.
+
+## Antwoorden op de vragen (week 9)
 ### 1. Voorbereiding
 1. In Webstorm kun je de instellingen van het project selecteren, waarna Webstorm zelf de commando's uitvoert om het project op te zetten. Nu voer je de commando's zelf uit in de terminal.
 
