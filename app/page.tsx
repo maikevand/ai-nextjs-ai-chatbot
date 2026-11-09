@@ -20,9 +20,9 @@ export default function Chat() {
       <div className="flex h-[min(40rem,calc(100dvh-3rem))] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
         <header className="border-b border-slate-100 px-5 py-4 sm:px-6">
           <p className="text-xs font-medium tracking-wide text-teal-700">
-            AI-assistent
+            AI-quizmaster
           </p>
-          <h1 className="text-lg font-semibold text-slate-900">Chat</h1>
+          <h1 className="text-lg font-semibold text-slate-900">Quiz</h1>
         </header>
 
         <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-5 sm:px-6">
