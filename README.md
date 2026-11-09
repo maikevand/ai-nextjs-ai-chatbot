@@ -1,3 +1,51 @@
+##Antwoorden op de vragen (week 10)
+### 1. Geef je chatbot vaste instructies
+1. Een prompt is datgene wat de gebruiker invoert, bv. een vraag of een opdracht. Een instructie zijn het doel en de randvoorwaarden achter de schermen. Hiermee wordt de chatbot geinstrueerd hoe te reageren.
+2. Je geeft instructies niet mee via de browser, omdat je de instructies serverside wilt houden. Via de browser meegeven maakt het risico groot op manipulatie van de instructies.
+3. Mijn chatbot ging eerst mee buiten de afbakening en gaf ook antwoorden op totaal andere vragen van de gebruiker. De instructie die hierop het meeste effect had was:
+`Treed alleen op als quizmaster en geef geen andere tekst dan de vragen, antwoorden en uitleg.`,
+4. Bij zero-shot geef je geen voorbeelden mee, bij one-shot één voorbeeld en bij few-shot een aantal verschillende voorbeelden. Dit zou kunnen helpen om de vragen van de quizmaster uniformer te maken, of om te zorgen dat er ook vragen worden gesteld met uitgebreidere antwoorden i.p.v. antwoorden van een paar woorden.
+
+### 2. Bewaar gesprekken in Supabase
+1. Bij een gesprek dat opgeslagen is in de React-state verdwijnt de conversatie bij refreshen. Als het gesprek opgslagen is in de database, kan het laatste gesprek geladen worden om zo weer weer te geven.
+2. Nee, het model onthoudt geen eerdere gesprekken, de database houdt deze bij.
+3. RLS staat aan, zodat de tabel niet publiekelijk toegankelijk is. Als je de key met PUBLIC-prefix in .env.local zou zetten, zou de key publiek toegankelijk worden. 
+4. In één rij: voordeel is dat het aantal rijen beperkter blijft, maar bij elke wijziging wordt alles opnieuw opgeslagen. Aparte rij per bericht: je kunt één bericht apart ophalen, maar om het gesprek opnieuw weer te geven moeten wel meerdere rijden opgehaald worden. 
+
+### 3. Beheer de context
+1. De input werd steeds hoger, doordat de totale conversatie steeds langer werd.
+2. De maximale hoeveelheid tekst die het model in één keer kan verwerken. Als het gesprek daar niet meer binnenpast, wordt de context ingekort. 
+3. 10. Zo wordt de context beperkt, maar is de kans op herhaling van vragen ook niet heel groot.
+4. Zie 3, met name het in herhaling vallen van vragen is dan een risico.
+5. Statische context is datgene wat gedurende de conversatie hetzelfde blijft, bv. de instructies die ik heb meegegeven. Dynamische context verandert tijdens de conversatie, bv. de vragen die al gesteld zijn en de antwoorden die al zijn gegeven. 
+
+### 4. Test de betrouwbaarheid van je chatbot
+1. Bij een hallucinatie beschikt AI niet over het juiste antwoord, maar wordt naar het antwoord gegist. Hierdoor lijkt het alsof AI het antwoord oplevert, maar is dit antwoord eigenlijk onjuist. In mijn chatbot worden vragen buiten de context van de quiz grotendeels genegeerd (zie 2).
+2. Het is één keer gelukt om het antwoord op een extra vraag te krijgen, die in lijn was met de gestelde vraag over scheikundige formules. Hierna hervatte de quizmaster meteen weer de oorspronkelijke taak. Alle overige pogingen werden genegeerd (irrelevante vragen stellen, prompt injection).
+3. Omdat niets 100% waterdicht is. Gebruikers kunnen toch proberen de AI van de instructies af te laten wijken. Je wil niet dat je geheime informatie dan via de instructies uitlekt als het iemand toch lukt om de instructies te laten weergeven.
+4. Een applicatie die tips geeft over klussen, maar aan de hand van prompt injection tips geeft buiten de ingestelde grenzen van de applicatie om over hoe je het beste een bom kan maken.
+5. Je wil alles van zoveel mogelijk perspectieven beveiligen. Je kan er niet helemaal op vertrouwen dat het model zich altijd aan de instructies houdt. Gesprekken kunnen nu niet door anderen gelezen worden, doordat RLS is ingeschakeld zonder policies. 
+
+## Antwoorden op de vragen (week 9)
+### 1. Voorbereiding
+1. In Webstorm kun je de instellingen van het project selecteren, waarna Webstorm zelf de commando's uitvoert om het project op te zetten. Nu voer je de commando's zelf uit in de terminal.
+
+2. Nee, dit werkt niet op alle besturingssystemen, ik krijg een foutmelding bij commando `touch .env.local`. In Windows Powershell heb ik het commando `New-Item .env.local -ItemType File` gebruikt om een nieuw bestand aan te maken.
+
+### 2. Bouw de basisapplicatie
+1. Alleen page.tsx draait in de browser, te herkennen aan de `'use client'`. Voor de chatfunctie is immers interactie met de gebruiker nodig.
+2. De API-key moet geheim blijven, omdat anderen hier misbruik van zouden kunnen maken als deze breder bekend wordt. Als je de sleutel in code zou zetten die naar de browser wordt gestuurd, leidt dit juist tot blootstelling van de key. Iemand anders zou dan bv. op de kosten van deze API-key kunnen gaan werken zonder toestemming. 
+3. Bij een gewone response wordt het antwoord weergegeven als dit helemaal klaar is. Bij een gestreamde response zie je het begin van het antwoord al verschijnen, terwijl het model nog bezig is met afronding van het antwoord.
+4. Vercel AI SDK faciliteert de implementatie van OpenAI in de applicatie. Bv. de koppeling met OpenAI en de useChat().
+5. De eerdere berichten van hetzelfde gesprek blijven zichtbaar (eerdere/andere gesprekken worden niet meegenomen). Bij een conversatie kan rekening gehouden worden met eerder geboden informatie, waarop je dan verder kan itereren. Als je maar één losse prompt zou kunnen gebruiken, wordt het erg lastig om in deze prompt precies alle informatie mee te nemen die nodig is.
+
+### Ga bewust om met API-gebruik
+1. Het beperken van de berichtlengte en antwoordlengte, omdat ik vermoed dat dit een significante invloed op het tokengebruik zal hebben zonder dat dit te veel ten koste gaat van de kwaliteit van de antwoorden. Een alternatief zoals berichtgeschiedenis doet dit ook, maar zal denk ik eerder ten koste gaan van de kwaliteit van het antwoord door verlies van context.
+2. Ik denk dat op deze manier minder tokens worden gebruikt, al zal het token-gebruik van deze tool mogelijk sowieso al minder snel uit de hand lopen dan bij chatbots die bv. afbeeldingen of video's genereren.
+3. Ik denk dat het altijd goed is om zowel frontend als backend te beveiligen. Als backend-controle achterwege wordt gelaten, bestaat het risico dat iemand daar gebruik van maakt door de controles in de frontend te omzeilen.
+4. Onbeperkt gebruik limiteren is nu nog niet mogelijk. Dan zou het gebruik gekoppeld moeten worden aan inloggegevens waarin het gebruik per gebruiker bijgehouden en begrensd wordt. Alternatief zou zijn om de mogelijkheden binnen één conversatie te begrenzen, maar daar ondervang je nog steeds niet meer dat iemand steeds nieuwe gesprekken begint.
+5. Omdat bij een chatgesprek alle eerdere berichten meegenomen worden als context. Dit kan helpend zijn qua kwaliteit van de output, maar kost ook meer tokens. 
+
 ## Opdrachtbeschrijving
 
 In deze opdracht bouw je een eenvoudige AI-chatapplicatie met Next.js, React en de Vercel AI SDK. Je gebruikt hiervoor de officiële documentatie als uitgangspunt.
