@@ -12,7 +12,7 @@ import { openai } from '@ai-sdk/openai';
 const MAX_INPUT_LENGTH = 150;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+  const { id, messages }: { messages: UIMessage[] } = await req.json();
   const lastMessage = messages[messages.length - 1];
 
   if (
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       originalMessages: messages,
       generateMessageId: () => crypto.randomUUID(),
       onEnd: async ({ messages }) => {
-        await saveChat(crypto.randomUUID(), messages);
+        await saveChat(id, messages);
       },
     }),
   });

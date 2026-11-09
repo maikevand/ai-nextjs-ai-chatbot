@@ -7,16 +7,16 @@ import type { UIMessage } from 'ai';
 const MAX_INPUT_LENGTH = 150;
 
 export default function Chat
-({ chat,
-}: {
+  ({ chat,
+  }: {
     chat: {
-        id: string;
-        messages: UIMessage[];
+      id: string;
+      messages: UIMessage[];
     } | null;
- }) {
+  }) {
   const [input, setInput] = useState('');
   const [apiError, setApiError] = useState(false);
-  const [inputError, setInputError] = useState(false);	
+  const [inputError, setInputError] = useState(false);
   const { messages, sendMessage, status, stop, error } = useChat({
     id: chat?.id,
     messages: chat?.messages ?? [],
