@@ -12,6 +12,20 @@
 3. RLS staat aan, zodat de tabel niet publiekelijk toegankelijk is. Als je de key met PUBLIC-prefix in .env.local zou zetten, zou de key publiek toegankelijk worden. 
 4. In één rij: voordeel is dat het aantal rijen beperkter blijft, maar bij elke wijziging wordt alles opnieuw opgeslagen. Aparte rij per bericht: je kunt één bericht apart ophalen, maar om het gesprek opnieuw weer te geven moeten wel meerdere rijden opgehaald worden. 
 
+### 3. Beheer de context
+1. De input werd steeds hoger, doordat de totale conversatie steeds langer werd.
+2. De maximale hoeveelheid tekst die het model in één keer kan verwerken. Als het gesprek daar niet meer binnenpast, wordt de context ingekort. 
+3. 10. Zo wordt de context beperkt, maar is de kans op herhaling van vragen ook niet heel groot.
+4. Zie 3, met name het in herhaling vallen van vragen is dan een risico.
+5. Statische context is datgene wat gedurende de conversatie hetzelfde blijft, bv. de instructies die ik heb meegegeven. Dynamische context verandert tijdens de conversatie, bv. de vragen die al gesteld zijn en de antwoorden die al zijn gegeven. 
+
+### 4. Test de betrouwbaarheid van je chatbot
+1. Bij een hallucinatie beschikt AI niet over het juiste antwoord, maar wordt naar het antwoord gegist. Hierdoor lijkt het alsof AI het antwoord oplevert, maar is dit antwoord eigenlijk onjuist. In mijn chatbot worden vragen buiten de context van de quiz grotendeels genegeerd (zie 2).
+2. Het is één keer gelukt om het antwoord op een extra vraag te krijgen, die in lijn was met de gestelde vraag over scheikundige formules. Hierna hervatte de quizmaster meteen weer de oorspronkelijke taak. Alle overige pogingen werden genegeerd (irrelevante vragen stellen, prompt injection).
+3. Omdat niets 100% waterdicht is. Gebruikers kunnen toch proberen de AI van de instructies af te laten wijken. Je wil niet dat je geheime informatie dan via de instructies uitlekt als het iemand toch lukt om de instructies te laten weergeven.
+4. Een applicatie die tips geeft over klussen, maar aan de hand van prompt injection tips geeft buiten de ingestelde grenzen van de applicatie om over hoe je het beste een bom kan maken.
+5. Je wil alles van zoveel mogelijk perspectieven beveiligen. Je kan er niet helemaal op vertrouwen dat het model zich altijd aan de instructies houdt. Gesprekken kunnen nu niet door anderen gelezen worden, doordat RLS is ingeschakeld zonder policies. 
+
 ## Antwoorden op de vragen (week 9)
 ### 1. Voorbereiding
 1. In Webstorm kun je de instellingen van het project selecteren, waarna Webstorm zelf de commando's uitvoert om het project op te zetten. Nu voer je de commando's zelf uit in de terminal.
